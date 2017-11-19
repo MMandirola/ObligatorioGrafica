@@ -142,16 +142,11 @@ void freeObj(Obj * obj){
 }
 
 void obj_render(Obj * obj){
-  glEnableClientState(GL_VERTEX_ARRAY);
-  glEnableClientState(GL_NORMAL_ARRAY);
-  glEnableClientState(GL_TEXTURE_COORD_ARRAY);
   glVertexPointer(3, GL_FLOAT, 0, (obj->drawVertexes).vector);
   glNormalPointer(GL_FLOAT, 0, (obj->drawNorms).vector);
   glTexCoordPointer(2,GL_FLOAT,0, (obj->drawTextures).vector);
   glDrawArrays(GL_TRIANGLES, 0, (obj -> faces).list_size * 3);
-  glDisableClientState(GL_VERTEX_ARRAY);
-  glDisableClientState(GL_NORMAL_ARRAY);
-  glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+
   return;
 }
 

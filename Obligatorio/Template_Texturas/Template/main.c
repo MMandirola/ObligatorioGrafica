@@ -217,13 +217,29 @@ int main(int argc, char* argv[])
             glUniform1i(uniform_tex, 0);
             //Luego asocio la textura con el id "texture"
             glBindTexture(GL_TEXTURE_2D,texture);
+            glEnableClientState(GL_VERTEX_ARRAY);
+            glEnableClientState(GL_NORMAL_ARRAY);
+            glEnableClientState(GL_TEXTURE_COORD_ARRAY);
             obj_render(box);
+            glTranslatef(0.0f, 0.0f, -50.0f);
+            obj_render(box);
+            glDisableClientState(GL_VERTEX_ARRAY);
+            glDisableClientState(GL_NORMAL_ARRAY);
+            glDisableClientState(GL_TEXTURE_COORD_ARRAY);
             shader_stop(gouraud);
         }
         else
         {
+            glEnableClientState(GL_VERTEX_ARRAY);
+            glEnableClientState(GL_NORMAL_ARRAY);
+            glEnableClientState(GL_TEXTURE_COORD_ARRAY);
             glBindTexture(GL_TEXTURE_2D,texture);
             obj_render(box);
+            glTranslatef(0.0f, 0.0f, -50.0f);
+            obj_render(box);
+            glDisableClientState(GL_VERTEX_ARRAY);
+            glDisableClientState(GL_NORMAL_ARRAY);
+            glDisableClientState(GL_TEXTURE_COORD_ARRAY);
         }
 
         cg_repaint();
