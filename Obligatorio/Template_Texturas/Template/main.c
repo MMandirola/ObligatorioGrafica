@@ -93,13 +93,13 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-    GLuint texture;
+    GLuint texture[2];
     //Creo un espacio para alojar una textura en memoria de video
-    glGenTextures(1,&texture);
+    glGenTextures(2,&texture);
     //Activo la textura nro 0
     glActiveTexture(GL_TEXTURE0);
     //Habilito la carga para la textura recien creada
-    glBindTexture(GL_TEXTURE_2D,texture);
+    glBindTexture(GL_TEXTURE_2D,texture[0]);
 
     //Cargo los datos de la imagen en la textura.
     glTexImage2D(GL_TEXTURE_2D,
@@ -130,6 +130,40 @@ int main(int argc, char* argv[])
     glTexParameteri(GL_TEXTURE_2D,
                     GL_TEXTURE_WRAP_T,
                     GL_REPEAT);
+
+    surface = IMG_Load("Models/knight.png");
+    glBindTexture(GL_TEXTURE_2D,texture[1]);
+
+    //Cargo los datos de la imagen en la textura.
+    glTexImage2D(GL_TEXTURE_2D,
+                 0,
+                 GL_RGBA,
+                 surface->w,
+                 surface->h,
+                 0,
+                 GL_RGB,GL_UNSIGNED_BYTE,
+                 surface->pixels);
+    //Luego de copiada la imagen a memoria de video, puedo liberarla sin problemas
+    SDL_FreeSurface(surface);
+
+    //Seteo el filtro a usar cuando se mapea la textura a una superficie mas chica (GL_LINEAR = filtro bilineal)
+    glTexParameteri(GL_TEXTURE_2D,
+                    GL_TEXTURE_MIN_FILTER,
+                    GL_LINEAR);
+    //Seteo el filtro a usar cuando se mapea la textura a una superficie mas grande (GL_LINEAR = filtro bilineal)
+    glTexParameteri(GL_TEXTURE_2D,
+                    GL_TEXTURE_MAG_FILTER,
+                    GL_LINEAR);
+
+    //Seteo el comportamiento cuando encuentro coordenadas de textura fuera del rango [0,1]
+    //GL_REPEAT es el comportamiento por defecto.
+    glTexParameteri(GL_TEXTURE_2D,
+                    GL_TEXTURE_WRAP_S,
+                    GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D,
+                    GL_TEXTURE_WRAP_T,
+                    GL_REPEAT);
+
 
 	while (!done)
 	{
@@ -216,13 +250,15 @@ int main(int argc, char* argv[])
             //que es donde cargué mi textura.
             glUniform1i(uniform_tex, 0);
             //Luego asocio la textura con el id "texture"
-            glBindTexture(GL_TEXTURE_2D,texture);
+
             glEnableClientState(GL_VERTEX_ARRAY);
             glEnableClientState(GL_NORMAL_ARRAY);
             glEnableClientState(GL_TEXTURE_COORD_ARRAY);
             obj_render(box);
+            glBindTexture(GL_TEXTURE_2D,texture[1]);
             glTranslatef(0.0f, 0.0f, -50.0f);
             obj_render(box);
+            glBindTexture(GL_TEXTURE_2D,texture[0]);
             glDisableClientState(GL_VERTEX_ARRAY);
             glDisableClientState(GL_NORMAL_ARRAY);
             glDisableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -233,10 +269,11 @@ int main(int argc, char* argv[])
             glEnableClientState(GL_VERTEX_ARRAY);
             glEnableClientState(GL_NORMAL_ARRAY);
             glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-            glBindTexture(GL_TEXTURE_2D,texture);
             obj_render(box);
+            glBindTexture(GL_TEXTURE_2D,texture[1]);
             glTranslatef(0.0f, 0.0f, -50.0f);
             obj_render(box);
+            glBindTexture(GL_TEXTURE_2D,texture[0]);
             glDisableClientState(GL_VERTEX_ARRAY);
             glDisableClientState(GL_NORMAL_ARRAY);
             glDisableClientState(GL_TEXTURE_COORD_ARRAY);
