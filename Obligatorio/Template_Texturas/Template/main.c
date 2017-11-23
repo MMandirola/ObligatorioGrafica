@@ -7,9 +7,9 @@
 #include <GL/gl.h>
 #endif
 
-#include "objects/obj.h"
+#include "objects/animation.h"
 #include "shader.h"
-
+#include <time.h>
 #include <SDL/SDL_image.h>
 
 int main(int argc, char* argv[])
@@ -67,10 +67,15 @@ int main(int argc, char* argv[])
     float ang = 0.0f;
     float pitch = 0.0f;
     float ang_vel = 1.0f;
-    Obj* box = malloc(sizeof(Obj));
-    initObj(box);
-    parseObj("knight_texturas.obj", box);
-    prepareToDraw(box);
+    Animation * anim = malloc(sizeof(Animation));
+    Animation * anim2 = malloc(sizeof(Animation));
+    // Obj* box = malloc(sizeof(Obj));
+    char *strings[] = {"Models/knight_run_0.obj","Models/knight_run_1.obj","Models/knight_run_2.obj", "Models/knight_run_3.obj", "Models/knight_run_4.obj", "Models/knight_run_5.obj"};
+    initAnimation(anim, strings, 6, 1);
+    char *strings2[] = {"Models/knight_pain_a_0.obj", "Models/knight_pain_a_1.obj", "Models/knight_pain_a_2.obj", "Models/knight_pain_a_3.obj"};
+    initAnimation(anim2, strings2, 4, 1);
+    // parseObj("knight_texturas.obj", box);
+    // prepareToDraw(box);
     // Obj* box = obj_load("Models/knight_texturas.obj");
 	char done = 0;
 	char wireframe = 0;
@@ -169,6 +174,8 @@ int main(int argc, char* argv[])
 	{
 
 		SDL_Event event;
+        float seconds = SDL_GetTicks() / (float) 1000;
+        printf("%d\n", seconds);
 		while(SDL_PollEvent(&event))
 		{
 			switch (event.type)
@@ -226,7 +233,8 @@ int main(int argc, char* argv[])
 
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
-        glTranslatef(0.0f, 0.0f, -50.0f);
+
+        glTranslatef(0.0f, 0.0f, -80.0f);
         glRotatef(pitch, 1.0f, 0.0f, 0.0f);
         glRotatef(ang, 0.0f, 1.0f, 0.0f);
 
@@ -254,10 +262,11 @@ int main(int argc, char* argv[])
             glEnableClientState(GL_VERTEX_ARRAY);
             glEnableClientState(GL_NORMAL_ARRAY);
             glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-            obj_render(box);
+
+            animationRender(anim, seconds);
             glBindTexture(GL_TEXTURE_2D,texture[1]);
             glTranslatef(0.0f, 0.0f, -50.0f);
-            obj_render(box);
+            animationRender(anim2, seconds);
             glBindTexture(GL_TEXTURE_2D,texture[0]);
             glDisableClientState(GL_VERTEX_ARRAY);
             glDisableClientState(GL_NORMAL_ARRAY);
@@ -269,10 +278,10 @@ int main(int argc, char* argv[])
             glEnableClientState(GL_VERTEX_ARRAY);
             glEnableClientState(GL_NORMAL_ARRAY);
             glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-            obj_render(box);
+            animationRender(anim, seconds);
             glBindTexture(GL_TEXTURE_2D,texture[1]);
             glTranslatef(0.0f, 0.0f, -50.0f);
-            obj_render(box);
+            animationRender(anim2, seconds);
             glBindTexture(GL_TEXTURE_2D,texture[0]);
             glDisableClientState(GL_VERTEX_ARRAY);
             glDisableClientState(GL_NORMAL_ARRAY);
@@ -281,7 +290,7 @@ int main(int argc, char* argv[])
 
         cg_repaint();
 	}
-    freeObj(box);
+    freeAnimation(anim);
     shader_free(gouraud);
     glDeleteTextures(1,&texture);
 	// Liberar recursos:
