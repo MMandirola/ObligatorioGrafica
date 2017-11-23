@@ -71,9 +71,9 @@ int main(int argc, char* argv[])
     Animation * anim2 = malloc(sizeof(Animation));
     // Obj* box = malloc(sizeof(Obj));
     char *strings[] = {"Models/knight_run_0.obj","Models/knight_run_1.obj","Models/knight_run_2.obj", "Models/knight_run_3.obj", "Models/knight_run_4.obj", "Models/knight_run_5.obj"};
-    initAnimation(anim, strings, 6, 1);
+    initAnimation(anim, strings, 6, 0.5f);
     char *strings2[] = {"Models/knight_pain_a_0.obj", "Models/knight_pain_a_1.obj", "Models/knight_pain_a_2.obj", "Models/knight_pain_a_3.obj"};
-    initAnimation(anim2, strings2, 4, 1);
+    initAnimation(anim2, strings2, 4, 1.0f);
     // parseObj("knight_texturas.obj", box);
     // prepareToDraw(box);
     // Obj* box = obj_load("Models/knight_texturas.obj");
