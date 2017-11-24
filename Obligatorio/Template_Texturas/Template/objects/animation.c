@@ -16,6 +16,10 @@ void initAnimation(Animation * animation, char ** paths, long npaths, float dura
 	}
 }
 void freeAnimation(Animation * animation){
+	for(int i = 0; i< animation -> objects.list_size; i++){
+		Obj * obj= (Obj *) (animation -> objects).vector;
+		freeObj(obj + i);
+	}
 	freeList(&(animation -> objects));
 	free(animation);
 }

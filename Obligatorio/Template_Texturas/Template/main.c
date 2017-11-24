@@ -291,6 +291,7 @@ int main(int argc, char* argv[])
         cg_repaint();
 	}
     freeAnimation(anim);
+    freeAnimation(anim2);
     shader_free(gouraud);
     glDeleteTextures(1,&texture);
 	// Liberar recursos:

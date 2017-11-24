@@ -24,7 +24,6 @@ void addElement(void * data, ArrayList * list){
 
 void freeList(ArrayList * list){
     free(list->vector);
-    free(list);
 }
 
 void* getIElement(ArrayList * list, int n){

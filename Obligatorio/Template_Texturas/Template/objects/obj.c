@@ -138,7 +138,6 @@ void freeObj(Obj * obj){
   freeList(&(obj -> drawVertexes));
   freeList(&(obj -> drawNorms));
   freeList(&(obj -> drawTextures));
-  free(obj);
 }
 
 void obj_render(Obj * obj){
