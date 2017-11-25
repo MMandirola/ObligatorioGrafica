@@ -8,7 +8,6 @@
 #include "../utils/list.h"
 #include <GL/gl.h>
 int initObj(Obj* result){
-    printf("%s\n", "Ok");
     initArrayList(sizeof(Vect), &(result->vertexes));
     initArrayList(sizeof(Face), &(result->faces));
     initArrayList(sizeof(Norm), &(result->norms));
@@ -27,7 +26,6 @@ int parseObj(char * fileName, Obj* result){
         printf("%s\n","Boom");
         return 0;
     }
-    printf("%s\n","hooray");
     while(fgets(buffer, MAX_LINE, fp) != NULL){
       if(strncmp("vn",buffer,2) == 0){
         Norm n;
@@ -93,7 +91,6 @@ int prepareToDraw(Obj * object){
   Vect * vertexList = (Vect *) vertexes.vector;
   Norm * normList = (Norm *) norms.vector;
   Texture * textureList = (Texture *) textures.vector;
-  printf("%s\n", "Eso esta bien");
   for(int i = 0;i<faces.list_size;i++){
     // printf("%d\n", i);
 

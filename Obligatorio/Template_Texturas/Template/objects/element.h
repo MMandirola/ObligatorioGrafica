@@ -9,9 +9,19 @@
 #endif //APPLEMAC#include "../utils/list.h"
 #include "../utils/list.h"
 typedef struct{
-	
-} Elment;
-void initFace(Face * face, char * line);
-void freeFace(Face * face);
-void correctIndex(Face * face);
+	ArrayList animations;
+	unsigned int texture;
+	float rotatex;
+	float rotatey;
+	float rotatez;
+	float translatex;
+	float translatey;
+	float translatez;
+	float scalex;
+	float scaley;
+	float scalez;
+} Element;
+void initElement(Element face, char * line);
+void freeElement(Element * element);
+void renderElement(Element * element);
 #endif

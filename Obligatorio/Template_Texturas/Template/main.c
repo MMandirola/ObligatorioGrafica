@@ -11,7 +11,8 @@
 #include "shader.h"
 #include <time.h>
 #include <SDL/SDL_image.h>
-
+#include "objects/obj.h"
+#include "objects/element.h"
 int main(int argc, char* argv[])
 {
     // Crear una ventana de 500x500 pixels:
@@ -67,13 +68,26 @@ int main(int argc, char* argv[])
     float ang = 0.0f;
     float pitch = 0.0f;
     float ang_vel = 1.0f;
+
     Animation * anim = malloc(sizeof(Animation));
     Animation * anim2 = malloc(sizeof(Animation));
     // Obj* box = malloc(sizeof(Obj));
-    char *strings[] = {"Models/knight_run_0.obj","Models/knight_run_1.obj","Models/knight_run_2.obj", "Models/knight_run_3.obj", "Models/knight_run_4.obj", "Models/knight_run_5.obj"};
-    initAnimation(anim, strings, 6, 0.5f);
-    char *strings2[] = {"Models/knight_pain_a_0.obj", "Models/knight_pain_a_1.obj", "Models/knight_pain_a_2.obj", "Models/knight_pain_a_3.obj"};
-    initAnimation(anim2, strings2, 4, 1.0f);
+    ArrayList * parsed_objs = malloc(sizeof(ArrayList));
+    initArrayList(sizeof(Obj), parsed_objs);
+    // printf("%s\n", "inst list");
+    char * objs[] = {"Models/knight_run_0.obj","Models/knight_run_1.obj","Models/knight_run_2.obj", "Models/knight_run_3.obj", "Models/knight_run_4.obj", "Models/knight_run_5.obj", "Models/knight_pain_a_0.obj", "Models/knight_pain_a_1.obj", "Models/knight_pain_a_2.obj", "Models/knight_pain_a_3.obj"};
+    for ( int i = 0; i < 10; i++){
+        Obj obj;
+        initObj(&obj);
+        parseObj(objs[i], &obj);
+        prepareToDraw(&obj);
+        addElement(&obj, parsed_objs);
+    }
+    // printf("%s\n", "loaded");
+    int indexes1[] = {0,1,2,3,4,5};
+    int indexes2[] = {6,7,8,9};
+    initAnimation(anim, indexes1, parsed_objs->vector, 6, 0.5f);
+    initAnimation(anim2, indexes2, parsed_objs->vector, 4, 1.0f);
     // parseObj("knight_texturas.obj", box);
     // prepareToDraw(box);
     // Obj* box = obj_load("Models/knight_texturas.obj");
@@ -175,7 +189,6 @@ int main(int argc, char* argv[])
 
 		SDL_Event event;
         float seconds = SDL_GetTicks() / (float) 1000;
-        printf("%d\n", seconds);
 		while(SDL_PollEvent(&event))
 		{
 			switch (event.type)
@@ -237,7 +250,6 @@ int main(int argc, char* argv[])
         glTranslatef(0.0f, 0.0f, -80.0f);
         glRotatef(pitch, 1.0f, 0.0f, 0.0f);
         glRotatef(ang, 0.0f, 1.0f, 0.0f);
-
         glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
 
         if(key_pressed[SDLK_RIGHT]) ang += ang_vel;
@@ -290,6 +302,11 @@ int main(int argc, char* argv[])
 
         cg_repaint();
 	}
+    for(int i = 0; i< parsed_objs->list_size; i++){
+     Obj * obj= (Obj *) (parsed_objs->vector);
+     freeObj(obj + i);
+    }
+    freeList(parsed_objs);
     freeAnimation(anim);
     freeAnimation(anim2);
     shader_free(gouraud);

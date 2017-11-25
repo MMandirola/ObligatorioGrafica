@@ -9,7 +9,7 @@ LIB_DIRS=`sdl-config --libs` -lGLU -lGL -lSDL_image -lm
 
 # agregue aqui, separado con espacios, cada archivo .c que produzca.
 # renombre la extension .c a .o (ejemplo.c -> ejemplo.o):
-OBJECTS = framework/color.o framework/mm.o framework/canvas.o main.o utils/list.o objects/face.o objects/normal.o objects/texture.o objects/vect.o objects/obj.o objects/animation.o shader.o
+OBJECTS = framework/color.o framework/mm.o framework/canvas.o main.o utils/list.o objects/face.o objects/normal.o objects/texture.o objects/vect.o objects/obj.o objects/animation.o shader.o objects/element.o
 
 # nombre a asignar al .exe producido:
 EXE = cg
