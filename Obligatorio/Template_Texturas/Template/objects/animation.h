@@ -10,6 +10,7 @@
 #include "../utils/list.h"
 #include "time.h"
 #include "obj.h"
+#include "math.h"
 typedef struct{
 	ArrayList objects;
 	float duration_in_seconds;

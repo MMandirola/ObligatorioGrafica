@@ -13,6 +13,7 @@
 #include <SDL/SDL_image.h>
 #include "objects/obj.h"
 #include "objects/element.h"
+#include "math.h"
 int main(int argc, char* argv[])
 {
     // Crear una ventana de 500x500 pixels:
@@ -74,7 +75,7 @@ int main(int argc, char* argv[])
     float z_coord = 0.0f;
     float zoom = 1.0f;
     float zoom_vel = 0.1f;
-    float distance_vel = 1.0f;
+    float distance_vel = 2.0f;
     float ang_vel = 1.0f;
 
     Animation  animation;
@@ -285,7 +286,9 @@ int main(int argc, char* argv[])
         glRotatef(model_pitch, 1.0f, 0.0f, 0.0f);
         glRotatef(model_ang, 0.0f, 1.0f, 0.0f);
         glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
-
+        float r_ang = ang * 3.14159f / 180;
+        float r_pitch = pitch * 3.14159f / 180;
+        printf("%f\n",r_ang);
         if(key_pressed[SDLK_RIGHT]) ang += ang_vel;
         if(key_pressed[SDLK_LEFT]) ang -= ang_vel;
         if(key_pressed[SDLK_UP]) pitch -= ang_vel;
@@ -293,10 +296,25 @@ int main(int argc, char* argv[])
 
         if(key_pressed[SDLK_q]) y_coord += distance_vel;
         if(key_pressed[SDLK_e]) y_coord -= distance_vel;
-        if(key_pressed[SDLK_a]) x_coord += distance_vel;
-        if(key_pressed[SDLK_d]) x_coord -= distance_vel;
-        if(key_pressed[SDLK_w]) z_coord += distance_vel;
-        if(key_pressed[SDLK_s]) z_coord -= distance_vel;
+        if(key_pressed[SDLK_a]){
+            z_coord += cos(r_pitch) * cos(r_ang - (3.14159/2)) * distance_vel;
+            x_coord += cos(r_pitch) * -sin(r_ang - (3.14159/2)) * distance_vel;
+        }
+        if(key_pressed[SDLK_d]){
+            z_coord += cos(r_pitch) * cos(r_ang + (3.14159/2)) * distance_vel;
+            x_coord += cos(r_pitch) * -sin(r_ang + (3.14159/2)) * distance_vel;
+
+        }
+        if(key_pressed[SDLK_w]){
+            z_coord += cos(r_pitch) * cos(r_ang) * distance_vel;
+            x_coord += cos(r_pitch) * -sin(r_ang) * distance_vel;
+            y_coord += sin(r_pitch) * distance_vel;
+        } 
+        if(key_pressed[SDLK_s]){
+            z_coord -= cos(r_pitch) * cos(r_ang) * distance_vel;
+            x_coord -= cos(r_pitch) * -sin(r_ang) * distance_vel;
+            y_coord -= sin(r_pitch) * distance_vel;
+        } 
         if(key_pressed[SDLK_h]) model_ang += ang_vel;
         if(key_pressed[SDLK_j]) model_ang -= ang_vel;
         if(key_pressed[SDLK_k]) model_pitch -= ang_vel;
