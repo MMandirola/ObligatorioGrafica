@@ -67,6 +67,12 @@ int main(int argc, char* argv[])
 
     float ang = 0.0f;
     float pitch = 0.0f;
+    float x_coord = 0.0f;
+    float y_coord = 0.0f;
+    float z_coord = 0.0f;
+    float zoom = 1.0f;
+    float zoom_vel = 0.1f;
+    float distance_vel = 1.0f;
     float ang_vel = 1.0f;
 
     Animation  animation;
@@ -222,7 +228,7 @@ int main(int argc, char* argv[])
 				        use_shader = !use_shader;
 				        break;
 				    }
-				    else if (event.key.keysym.sym == SDLK_s)
+				    else if (event.key.keysym.sym == SDLK_x)
 				    {
 				        specular = !specular;
 				        break;
@@ -268,17 +274,30 @@ int main(int argc, char* argv[])
 
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
-
-        glTranslatef(0.0f, 0.0f, -80.0f);
         glRotatef(pitch, 1.0f, 0.0f, 0.0f);
         glRotatef(ang, 0.0f, 1.0f, 0.0f);
+        printf("%f\n", zoom);
+        glTranslatef(x_coord, y_coord, z_coord);
+        glScalef(zoom,zoom,zoom);
+        glTranslatef(0.0f, 0.0f, -80.0f);
         glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
 
         if(key_pressed[SDLK_RIGHT]) ang += ang_vel;
         if(key_pressed[SDLK_LEFT]) ang -= ang_vel;
-        if(key_pressed[SDLK_UP]) pitch += ang_vel;
-        if(key_pressed[SDLK_DOWN]) pitch -= ang_vel;
-
+        if(key_pressed[SDLK_UP]) pitch -= ang_vel;
+        if(key_pressed[SDLK_DOWN]) pitch += ang_vel;
+        if(key_pressed[SDLK_q]) y_coord += distance_vel;
+        if(key_pressed[SDLK_e]) y_coord -= distance_vel;
+        if(key_pressed[SDLK_a]) x_coord += distance_vel;
+        if(key_pressed[SDLK_d]) x_coord -= distance_vel;
+        if(key_pressed[SDLK_w]) z_coord += distance_vel;
+        if(key_pressed[SDLK_s]) z_coord -= distance_vel;
+        if(key_pressed[SDLK_t]) zoom += zoom_vel;
+        if(key_pressed[SDLK_y]){
+            if (zoom - zoom_vel >= 0){
+                zoom -= zoom_vel; 
+            }
+        } 
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
         //Informo a OpenGL que para todas las operaciones a continuación utilice las texturas 2D cargadas
