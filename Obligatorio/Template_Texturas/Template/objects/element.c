@@ -4,6 +4,7 @@
 #include "animation.h"
 void initElement(Element * element, Animation * animations, int * indexs, long nanims, unsigned int texture, float rotatex, float rotatey, float rotatez, float translatex, float translatey, float translatez, float scalex, float scaley, float scalez){
 	initArrayList(sizeof(Animation *), &(element -> animations));
+	initArrayList(sizeof(Element *), &(element -> children));
 	element -> texture = texture;
 	element -> rotatex = rotatex;
 	element -> rotatey = rotatey;
@@ -21,8 +22,12 @@ void initElement(Element * element, Animation * animations, int * indexs, long n
 	}
 
 }
+void addChild(Element * parent, Element * son){
+	addElement(&son, &(parent -> children));
+}
 void freeElement(Element * element){
 	freeList(&(element -> animations));
+	freeList(&(element -> children));
 	free(element);
 }
 void renderElement(Element * element, float seconds){
@@ -37,6 +42,10 @@ void renderElement(Element * element, float seconds){
 		Animation ** current = (element ->animations).vector;
 		Animation * element = current[0];
 		animationRender(element, seconds);
+	}
+	Element ** children = (element -> children).vector;
+	for(int i=0; i<(element -> children).list_size; i++){
+		renderElement(children[i],seconds);
 	}
 	glPopMatrix();
 }

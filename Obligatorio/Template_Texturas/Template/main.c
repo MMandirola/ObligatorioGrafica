@@ -100,6 +100,8 @@ int main(int argc, char* argv[])
     Element * elem1 = malloc(sizeof(Element)); 
     Element * elem2 = malloc(sizeof(Element));
     Element * elem3 = malloc(sizeof(Element));
+    Element * root =  malloc(sizeof(Element));
+
 
     // parseObj("knight_texturas.obj", box);
     // prepareToDraw(box);
@@ -195,10 +197,13 @@ int main(int argc, char* argv[])
     glTexParameteri(GL_TEXTURE_2D,
                     GL_TEXTURE_WRAP_T,
                     GL_REPEAT);
-
+    initElement(root, animations->vector, animindexes, 0, texture[0],0, 0, 0, 0,0,0, 1,1,1);
     initElement(elem1, animations->vector, animindexes, 1, texture[0],0.5, 0, 0, 0,0,0, 2,2,2);
     initElement(elem2, animations->vector, animindexes2, 1, texture[1], 0,0,0,0,0,-50.0f,1,1,1) ;
     initElement(elem3, animations->vector, animindexes3, 1, texture[1],0,0,0,0,0,50.0f,1,1,1); 
+    addChild(root, elem1);
+    addChild(elem1, elem3);
+    addChild(root, elem2);
 
 
 	while (!done)
@@ -291,9 +296,7 @@ int main(int argc, char* argv[])
             glEnableClientState(GL_VERTEX_ARRAY);
             glEnableClientState(GL_NORMAL_ARRAY);
             glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-            renderElement(elem1, seconds);
-            renderElement(elem2, seconds);
-            renderElement(elem3, seconds);
+            renderElement(root, seconds);
             glDisableClientState(GL_VERTEX_ARRAY);
             glDisableClientState(GL_NORMAL_ARRAY);
             glDisableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -304,9 +307,7 @@ int main(int argc, char* argv[])
             glEnableClientState(GL_VERTEX_ARRAY);
             glEnableClientState(GL_NORMAL_ARRAY);
             glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-            renderElement(elem1, seconds);
-            renderElement(elem2, seconds);
-            renderElement(elem3, seconds);
+            renderElement(root, seconds);
             glDisableClientState(GL_VERTEX_ARRAY);
             glDisableClientState(GL_NORMAL_ARRAY);
             glDisableClientState(GL_TEXTURE_COORD_ARRAY);

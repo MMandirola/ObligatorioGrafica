@@ -21,7 +21,9 @@ typedef struct{
 	float scalex;
 	float scaley;
 	float scalez;
+	ArrayList children;
 } Element;
 void initElement(Element * element, Animation * animations, int * indexs, long nanims, unsigned int texture, float rotatex, float rotatey, float rotatez, float translatex, float translatey, float translatez, float scalex, float scaley, float scalez);
 void renderElement(Element * element, float seconds);
+void addChild(Element * parent, Element * son);
 #endif
