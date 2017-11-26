@@ -69,11 +69,15 @@ int main(int argc, char* argv[])
     float pitch = 0.0f;
     float ang_vel = 1.0f;
 
-    Animation * anim = malloc(sizeof(Animation));
-    Animation * anim2 = malloc(sizeof(Animation));
+    Animation  animation;
+    Animation  animation2;
+    Animation * anim = &animation;
+    Animation * anim2 = &animation2;
     // Obj* box = malloc(sizeof(Obj));
+    ArrayList * animations = malloc(sizeof(ArrayList));
     ArrayList * parsed_objs = malloc(sizeof(ArrayList));
     initArrayList(sizeof(Obj), parsed_objs);
+    initArrayList(sizeof(Animation), animations);
     // printf("%s\n", "inst list");
     char * objs[] = {"Models/knight_run_0.obj","Models/knight_run_1.obj","Models/knight_run_2.obj", "Models/knight_run_3.obj", "Models/knight_run_4.obj", "Models/knight_run_5.obj", "Models/knight_pain_a_0.obj", "Models/knight_pain_a_1.obj", "Models/knight_pain_a_2.obj", "Models/knight_pain_a_3.obj"};
     for ( int i = 0; i < 10; i++){
@@ -86,8 +90,17 @@ int main(int argc, char* argv[])
     // printf("%s\n", "loaded");
     int indexes1[] = {0,1,2,3,4,5};
     int indexes2[] = {6,7,8,9};
+    int animindexes[] = {0};
+    int animindexes2[] = {1};
+    int animindexes3[] = {0};
     initAnimation(anim, indexes1, parsed_objs->vector, 6, 0.5f);
     initAnimation(anim2, indexes2, parsed_objs->vector, 4, 1.0f);
+    addElement(anim, animations);
+    addElement(anim2, animations);
+    Element * elem1 = malloc(sizeof(Element)); 
+    Element * elem2 = malloc(sizeof(Element));
+    Element * elem3 = malloc(sizeof(Element));
+
     // parseObj("knight_texturas.obj", box);
     // prepareToDraw(box);
     // Obj* box = obj_load("Models/knight_texturas.obj");
@@ -183,6 +196,10 @@ int main(int argc, char* argv[])
                     GL_TEXTURE_WRAP_T,
                     GL_REPEAT);
 
+    initElement(elem1, animations->vector, animindexes, 1, texture[0],0.5, 0, 0, 0,0,0, 2,2,2);
+    initElement(elem2, animations->vector, animindexes2, 1, texture[1], 0,0,0,0,0,-50.0f,1,1,1) ;
+    initElement(elem3, animations->vector, animindexes3, 1, texture[1],0,0,0,0,0,50.0f,1,1,1); 
+
 
 	while (!done)
 	{
@@ -274,12 +291,9 @@ int main(int argc, char* argv[])
             glEnableClientState(GL_VERTEX_ARRAY);
             glEnableClientState(GL_NORMAL_ARRAY);
             glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-
-            animationRender(anim, seconds);
-            glBindTexture(GL_TEXTURE_2D,texture[1]);
-            glTranslatef(0.0f, 0.0f, -50.0f);
-            animationRender(anim2, seconds);
-            glBindTexture(GL_TEXTURE_2D,texture[0]);
+            renderElement(elem1, seconds);
+            renderElement(elem2, seconds);
+            renderElement(elem3, seconds);
             glDisableClientState(GL_VERTEX_ARRAY);
             glDisableClientState(GL_NORMAL_ARRAY);
             glDisableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -290,11 +304,9 @@ int main(int argc, char* argv[])
             glEnableClientState(GL_VERTEX_ARRAY);
             glEnableClientState(GL_NORMAL_ARRAY);
             glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-            animationRender(anim, seconds);
-            glBindTexture(GL_TEXTURE_2D,texture[1]);
-            glTranslatef(0.0f, 0.0f, -50.0f);
-            animationRender(anim2, seconds);
-            glBindTexture(GL_TEXTURE_2D,texture[0]);
+            renderElement(elem1, seconds);
+            renderElement(elem2, seconds);
+            renderElement(elem3, seconds);
             glDisableClientState(GL_VERTEX_ARRAY);
             glDisableClientState(GL_NORMAL_ARRAY);
             glDisableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -307,8 +319,14 @@ int main(int argc, char* argv[])
      freeObj(obj + i);
     }
     freeList(parsed_objs);
-    freeAnimation(anim);
-    freeAnimation(anim2);
+    for(int i = 0; i< animations->list_size; i++){
+     Animation * animation = (Animation *) (animations->vector);
+     freeAnimation(animation + i);
+    }
+    freeList(animations);
+    freeElement(elem1);
+    freeElement(elem2);
+    freeElement(elem3);
     shader_free(gouraud);
     glDeleteTextures(1,&texture);
 	// Liberar recursos:
