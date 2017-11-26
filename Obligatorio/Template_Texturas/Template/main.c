@@ -67,6 +67,8 @@ int main(int argc, char* argv[])
 
     float ang = 0.0f;
     float pitch = 0.0f;
+    float model_pitch = 0.0f;
+    float model_ang = 0.0f;
     float x_coord = 0.0f;
     float y_coord = 0.0f;
     float z_coord = 0.0f;
@@ -280,24 +282,31 @@ int main(int argc, char* argv[])
         glTranslatef(x_coord, y_coord, z_coord);
         glScalef(zoom,zoom,zoom);
         glTranslatef(0.0f, 0.0f, -80.0f);
+        glRotatef(model_pitch, 1.0f, 0.0f, 0.0f);
+        glRotatef(model_ang, 0.0f, 1.0f, 0.0f);
         glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
 
         if(key_pressed[SDLK_RIGHT]) ang += ang_vel;
         if(key_pressed[SDLK_LEFT]) ang -= ang_vel;
         if(key_pressed[SDLK_UP]) pitch -= ang_vel;
         if(key_pressed[SDLK_DOWN]) pitch += ang_vel;
+
         if(key_pressed[SDLK_q]) y_coord += distance_vel;
         if(key_pressed[SDLK_e]) y_coord -= distance_vel;
         if(key_pressed[SDLK_a]) x_coord += distance_vel;
         if(key_pressed[SDLK_d]) x_coord -= distance_vel;
         if(key_pressed[SDLK_w]) z_coord += distance_vel;
         if(key_pressed[SDLK_s]) z_coord -= distance_vel;
+        if(key_pressed[SDLK_h]) model_ang += ang_vel;
+        if(key_pressed[SDLK_j]) model_ang -= ang_vel;
+        if(key_pressed[SDLK_k]) model_pitch -= ang_vel;
+        if(key_pressed[SDLK_l]) model_pitch += ang_vel;
         if(key_pressed[SDLK_t]) zoom += zoom_vel;
         if(key_pressed[SDLK_y]){
             if (zoom - zoom_vel >= 0){
                 zoom -= zoom_vel; 
             }
-        } 
+        }
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
         //Informo a OpenGL que para todas las operaciones a continuación utilice las texturas 2D cargadas
@@ -347,6 +356,7 @@ int main(int argc, char* argv[])
     freeElement(elem1);
     freeElement(elem2);
     freeElement(elem3);
+    freeElement(root);
     shader_free(gouraud);
     glDeleteTextures(1,&texture);
 	// Liberar recursos:
