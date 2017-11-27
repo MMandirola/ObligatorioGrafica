@@ -1,0 +1,48 @@
+La condiciones de compilacion son las del template del curso
+Se implementaron:
+
+Los problemas obligatorios
+Animaciones por tiempo
+Scenegraph
+Camara movil 
+Intento de phong (No carga texturas)
+
+Se trato de separar el codigo en entidades tales como:
+
+Textures
+Vertex
+Norms
+Faces
+Obj
+Animations
+Element
+
+Dentro de obj estan cacheadas las listas que va a dibujar para no tener que hacer ese caclulo en rasterizacion
+Animations, Objs y Elements y luego son referenciados para cargar un obj una sola vez
+Las animaciones pueden tener duraciones distintas
+Los movimientos de la camara son en funcion de donde uno esta mirando
+Las teclas que se configuraron fueron
+
+w mover camara hacia adelante
+s mover camara hacia atras
+a mover camara a la izquierda
+d mover la camara a la derecha
+q mover camara hacia arriba
+e mover camara hacia abajo
+h rotar modelos x positivo
+j rotar modelos x negativo
+k rotar modelos y positivo
+l rotar modelos y negarivo
+t zoom in
+y zoom out
+izq girar la camara a la izquierda
+der girar camara a la derecha
+abajo girar camara hacia abajo
+arriba girar camara hacia arriba
+p usar gourau shading o intento de phong si se descomenta linea
+x activar luz especlar
+z z-buffer
+m malla de alambre
+b backface culling
+
+
