@@ -279,7 +279,6 @@ int main(int argc, char* argv[])
         glLoadIdentity();
         glRotatef(pitch, 1.0f, 0.0f, 0.0f);
         glRotatef(ang, 0.0f, 1.0f, 0.0f);
-        printf("%f\n", zoom);
         glTranslatef(x_coord, y_coord, z_coord);
         glScalef(zoom,zoom,zoom);
         glTranslatef(0.0f, 0.0f, -80.0f);
@@ -288,7 +287,6 @@ int main(int argc, char* argv[])
         glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
         float r_ang = ang * 3.14159f / 180;
         float r_pitch = pitch * 3.14159f / 180;
-        printf("%f\n",r_ang);
         if(key_pressed[SDLK_RIGHT]) ang += ang_vel;
         if(key_pressed[SDLK_LEFT]) ang -= ang_vel;
         if(key_pressed[SDLK_UP]) pitch -= ang_vel;
@@ -376,13 +374,12 @@ int main(int argc, char* argv[])
     freeElement(elem3);
     freeElement(root);
     shader_free(gouraud);
-    glDeleteTextures(1,&texture);
+    glDeleteTextures(2,&texture);
 	// Liberar recursos:
 	cg_close();
 
 	// Ejemplo del modulo de Manejo de Memoria (MM):
 	int* pint = (int *)cg_malloc(10*sizeof(int));
-	printf("pint is a pointer: %p\n", pint);
 	cg_free(pint); // olvidarse de liberar este objeto produce un mensaje
 
 
